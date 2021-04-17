@@ -1,4 +1,4 @@
--- @block 
+--@block
 CREATE TABLE cidadao(
     cpf VARCHAR(11) NOT NULL,
     nome VARCHAR(50) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE cidadao(
     REFERENCES historico_vac(cod_historico)
 );
 
-
+--@block
 CREATE TABLE contato(
     cod_contato VARCHAR(6),
     tel_celular VARCHAR(11) NOT NULL UNIQUE,
@@ -29,7 +29,7 @@ CREATE TABLE contato(
     PRIMARY KEY (cod_contato)
 );
 
-
+-- @BLOCK
 CREATE TABLE historico_vac(
     cod_historico VARCHAR(6),
     cod_frasco VARCHAR(6) NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE historico_vac(
     
 );
 
-
+-- @block
 CREATE TABLE frasco(
     cod_frasco VARCHAR(8),
     cod_vacina VARCHAR(6),
@@ -64,7 +64,7 @@ CREATE TABLE frasco(
     REFERENCES vacina(cod_vacina)
 );
 
-
+-- @block
 CREATE TABLE vacina(
     cod_vacina VARCHAR(6),
     nome VARCHAR(20) NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE vacina(
     PRIMARY KEY (cod_vacina)
 );
 
-
+-- @block
 CREATE TABLE armazena(
     cod_posto VARCHAR(6),
     cod_vacina VARCHAR(6),
@@ -84,7 +84,7 @@ CREATE TABLE armazena(
 
     CONSTRAINT FK_ArmazenaVac
     FOREIGN KEY (cod_vacina)
-    REFERENCES vacina(cod_vacina)
+    REFERENCES vacina(cod_vacina),
 
     CONSTRAINT FK_ArmazenaPosto
     FOREIGN KEY (cod_posto)
@@ -92,7 +92,7 @@ CREATE TABLE armazena(
 
 );
 
-
+-- @block
 CREATE TABLE posto(
     cod_posto VARCHAR(6),
     nome VARCHAR(40) NOT NULL,
@@ -102,6 +102,7 @@ CREATE TABLE posto(
 
 );
 
+-- @block
 CREATE TABLE funcionario(
     cod_func VARCHAR(6),
     nome VARCHAR(50) NOT NULL,
@@ -116,3 +117,5 @@ CREATE TABLE funcionario(
     
 );
 
+--@block
+drop table vacina;
