@@ -72,7 +72,54 @@ CREATE TABLE posto(
 CREATE TABLE funcionario(
     cod_func VARCHAR(6),
     nome VARCHAR(50) NOT NULL,
+    -- cod_posto do funcionario pode ser
+    -- null pela regra de negocio 
     cod_posto VARCHAR(6) NOT NULL,
 
     PRIMARY KEY (cod_func)
 );
+
+-- Foreign keys do plastino
+
+-- @BLOCK
+ALTER TABLE cidadao
+ADD CONSTRAINT FK_CidadaoContato
+FOREIGN KEY (cpf) REFERENCES Contato(cpf)
+ON DELETE CASCADE;
+
+-- @BLOCK
+ALTER TABLE cidadao
+DROP FOREIGN KEY FK_CidadaoContato;
+
+-- @BLOCK
+ALTER TABLE historico_vac
+ADD CONSTRAINT FK_HistVacFrasco
+FOREIGN KEY (cod_frasco) REFERENCES frasco(cod_frasco)
+ON DELETE RESTRICT;
+
+-- @BLOCK
+ALTER TABLE funcionario
+MODIFY COLUMN cod_posto VARCHAR(6);
+
+-- @BLOCK
+ALTER TABLE funcionario
+ADD CONSTRAINT FK_FuncionarioPosto
+FOREIGN KEY (cod_posto) REFERENCES posto(cod_posto)
+ON DELETE SET NULL;
+
+-- Outras foreign keys 
+-- @BLOCK
+ALTER TABLE historico_vac
+ADD CONSTRAINT FK_CidadaoHistorico
+FOREIGN KEY (cpf_cidadao) REFERENCES cidadao(cpf)
+
+-- @BLOCK
+ALTER TABLE armazena
+ADD CONSTRAINT FK_ArmazenaVacina
+FOREIGN KEY (cod_vacina) REFERENCES vacina(cod_vacina)
+
+-- @BLOCK
+ALTER TABLE armazena
+ADD CONSTRAINT FK_ArmazenaPosto
+FOREIGN KEY (cod_posto) REFERENCES posto(cod_posto)
+
