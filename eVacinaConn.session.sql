@@ -56,6 +56,17 @@ ADD CONSTRAINT FK_FrascoVacina
 FOREIGN KEY (cod_vacina)
 REFERENCES vacina(cod_vacina);
 
+--@block
+alter table historico_vac
+DROP FOREIGN KEY FK_HistFrasco;
+
+--@BLOCK
+alter table historico_vac
+ADD CONSTRAINT FK_HistFrasco
+FOREIGN KEY (cod_frasco)
+REFERENCES frasco(cod_frasco)
+ON DELETE RESTRICT;
+
 -- @BLOCK
 CREATE TABLE vacina(
     cod_vacina VARCHAR(6),
@@ -88,11 +99,32 @@ CREATE TABLE posto(
 CREATE TABLE funcionario(
     cod_func VARCHAR(6),
     nome VARCHAR(50) NOT NULL,
-    cod_posto VARCHAR(6) NOT NULL,
+    cod_posto VARCHAR(6),
 
-    PRIMARY KEY (cod_func)
+    PRIMARY KEY (cod_func),
+
+    CONSTRAINT FK_FuncPosto
+    FOREIGN KEY (cod_posto)
+    REFERENCES posto(cod_posto)
+    ON DELETE SET NULL
 ); 
 
+--@BLOCK
+ALTER TABLE funcionario
+ADD CONSTRAINT FK_FuncPosto
+    FOREIGN KEY (cod_posto)
+    REFERENCES posto(cod_posto)
+    ON DELETE CASCADE;
+
+--@block
+drop table funcionario;
+
+--@BLOCK
+alter table historico_vac
+ADD CONSTRAINT FK_HistFrasco
+FOREIGN KEY (cod_frasco)
+REFERENCES frasco(cod_frasco)
+ON DELETE RESTRICT;
 
 -- INSERÇÃO
 --@block
@@ -169,7 +201,7 @@ INSERT INTO armazena
 --@block
 INSERT INTO funcionario
 (cod_func, nome, cod_posto) VALUES (
-    'JH589D',
+    'AHSH56',
     'Ciclano Lopes',
     'A4HMDH'
 );
