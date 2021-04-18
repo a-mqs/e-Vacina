@@ -205,6 +205,7 @@ SELECT * FROM funcionario;
 DELETE FROM funcionario WHERE cod_func = 'A4HMDH'
 
 
+
 -- JOINS
 --@block
 SELECT cidadao.cpf AS cpf, cidadao.nome as nome, contato.tel_celular as celular, contato.email as email
@@ -232,5 +233,23 @@ RIGHT JOIN frasco
     ON historico_vac.cod_frasco = frasco.cod_frasco
 RIGHT JOIN vacina
     ON frasco.cod_vacina = vacina.cod_vacina;
+
+--@block
+SELECT *
+FROM cidadao
+RIGHT JOIN contato
+    ON cidadao.cpf = contato.cpf
+RIGHT JOIN historico_vac
+    ON cidadao.cpf = historico_vac.cpf_cidadao
+RIGHT JOIN funcionario
+    ON funcionario.cod_func = historico_vac.cod_func
+RIGHT JOIN frasco
+    ON historico_vac.cod_frasco = frasco.cod_frasco
+RIGHT JOIN vacina
+    ON frasco.cod_vacina = vacina.cod_vacina
+RIGHT JOIN posto
+    ON funcionario.cod_posto = posto.cod_posto
+RIGHT JOIN armazena
+    ON armazena.cod_vacina = vacina.cod_vacina
 
 
