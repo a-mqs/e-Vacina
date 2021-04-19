@@ -118,7 +118,6 @@ CREATE TABLE funcionario(
 
 
 
-
 --@block
 insert into cidadao(
     cpf, nome, municipio, data_nasc
@@ -130,6 +129,39 @@ insert into cidadao(
 );
 
 --@block
+insert into cidadao(
+    cpf, nome, municipio, data_nasc
+) VALUES (
+    '15896325487',
+    'João Lopes dos Santos',
+    'São Gonçalo',
+    '1999-12-04'
+);
+
+--@block
+insert into cidadao(
+    cpf, nome, municipio, data_nasc
+) VALUES (
+    '25698741236',
+    'Maria das Dores de Almeida',
+    'Itaboraí',
+    '1969-04-02'
+);
+
+--@block
+insert into cidadao(
+    cpf, nome, municipio, data_nasc
+) VALUES (
+    '25698741230',
+    'Alice Ferreira dos Santos',
+    'Icaraí',
+    '1996-12-30'
+);
+
+
+
+
+--@block
 insert into contato(
     cpf, tel_celular, tel_fixo, email
 ) VALUES (
@@ -138,6 +170,34 @@ insert into contato(
     '2136988521',
     'fulano@gmail.com'
 );
+--@block
+insert into contato(
+    cpf, tel_celular, tel_fixo, email
+) VALUES (
+    '15896325487',
+    '21998563255',
+    '2135874455',
+    'joao.lopes@gmail.com'
+);
+--@block
+insert into contato(
+    cpf, tel_celular, tel_fixo, email
+) VALUES (
+    '25698741236',
+    '21985225566',
+    '2137488541',
+    null
+);
+--@block
+insert into contato(
+    cpf, tel_celular, tel_fixo, email
+) VALUES (
+    '25698741230',
+    '21956544458',
+    null,
+    'alice@gmail.com'
+);
+
 
 --@block
 insert into historico_vac(
@@ -145,6 +205,50 @@ insert into historico_vac(
 ) VALUES (
     '12365478989',
     'A4HM897H',
+    'AHSH56',
+    true,
+    '2021-01-12',
+    null,
+    null
+    
+);
+
+--@block
+insert into historico_vac(
+    cpf_cidadao, cod_frasco, cod_func, prim_dose, data_aplic_prim, seg_dose, data_aplic_seg
+) VALUES (
+    '15896325487',
+    'HJ778JUY',
+    'AHSH56',
+    true,
+    '2021-01-12',
+    null,
+    null
+    
+);
+
+-- Teste SEM VALORES DUPLICADOS
+--@block
+insert into historico_vac(
+    cpf_cidadao, cod_frasco, cod_func, prim_dose, data_aplic_prim, seg_dose, data_aplic_seg
+) VALUES (
+    '15896325487',
+    'HJ778JUY',
+    'AHSH56',
+    true,
+    '2021-01-12',
+    null,
+    null
+    
+);
+
+-- Teste INTEGRIDADE REFERENCIAL
+--@block
+insert into historico_vac(
+    cpf_cidadao, cod_frasco, cod_func, prim_dose, data_aplic_prim, seg_dose, data_aplic_seg
+) VALUES (
+    '158rr325487',
+    'HJ778JUY',
     'AHSH56',
     true,
     '2021-01-12',
@@ -171,14 +275,27 @@ INSERT INTO frasco
     'I43O'
 );
 
-
-
+--@BLOCK
+INSERT INTO frasco
+(cod_frasco, cod_vacina, lote) VALUES (
+    'HJ778JUY',
+    'JI9O8U',
+    'I43O'
+);
 
 --@BLOCK
 INSERT INTO posto
 (cod_posto, nome, municipio) VALUES (
     'A4HMDH',
     'Posto Nelson Mandela',
+    'Icaraí'
+);
+
+--@BLOCK
+INSERT INTO posto
+(cod_posto, nome, municipio) VALUES (
+    'JROFT5',
+    'Posto Marie Curie',
     'Icaraí'
 );
 
@@ -197,6 +314,16 @@ INSERT INTO funcionario
     'Ciclano Lopes',
     'A4HMDH'
 );
+
+--@block
+INSERT INTO funcionario
+(cod_func, nome, cod_posto) VALUES (
+    'GFHI83',
+    'Matheus Paiva Dias',
+    'JROFT5'
+);
+
+
 
 
 
@@ -220,6 +347,54 @@ SELECT * FROM posto;
 
 --@block
 SELECT * FROM armazena;
+
+--@block
+SELECT * FROM funcionario;
+
+-- Teste ON DELETE CASCADE
+--@block
+SELECT cidadao.nome, contato.tel_celular, contato.tel_fixo, contato.email 
+FROM cidadao
+INNER JOIN contato 
+ON cidadao.cpf = contato.cpf;
+
+--@block
+DELETE FROM cidadao WHERE cpf = '25698741230';
+
+--@block
+SELECT * FROM contato;
+
+--@block
+SELECT cidadao.nome, contato.tel_celular, contato.tel_fixo, contato.email 
+FROM cidadao
+INNER JOIN contato 
+ON cidadao.cpf = contato.cpf;
+
+-- Teste ON DELETE RESTRICT
+--@block
+SELECT *
+FROM historico_vac
+INNER JOIN frasco 
+ON historico_vac.cod_frasco = frasco.cod_frasco;
+
+--@block
+DELETE FROM frasco WHERE cod_frasco = 'HJ778JUY';
+
+--@block
+SELECT *
+FROM historico_vac
+INNER JOIN frasco 
+ON historico_vac.cod_frasco = frasco.cod_frasco;
+
+-- Teste ON DELETE SET NULL
+--@block
+SELECT *
+FROM posto
+INNER JOIN funcionario 
+ON posto.cod_posto = funcionario.cod_posto;
+
+--@block
+DELETE FROM posto WHERE cod_posto = 'JROFT5';
 
 --@block
 SELECT * FROM funcionario;
